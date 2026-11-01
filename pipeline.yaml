@@ -9,17 +9,25 @@ spec:
     - name: image-url
       type: string
   tasks:
-    - name: test-app
+    - name: npminstall
       taskRef:
-        name: test
+        name: npm-install
       workspaces:
         - name: source
           workspace: shared-workspace
-    - name: build-app
+    - name: tests
+      taskRef:
+        name: jasmine-test
+      runAfter:
+        - npminstall
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+    - name: build
       taskRef:
         name: build-image
       runAfter:
-        - test-app
+        - tests
       workspaces:
         - name: source
           workspace: shared-workspace
